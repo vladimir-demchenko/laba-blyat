@@ -1,0 +1,117 @@
+#ifndef BASE_H
+#define BASE_H
+#include <iostream>
+#include <vector>
+using namespace std;
+class Base
+{
+private:
+
+protected:
+vector <Base*> _children;
+public:
+string _name;
+string _way;
+bool _isReady = false;
+Base(string name, int isReady = true, string way = "");//: _name(name) 
+/*
+{
+if(isReady>0)
+_isReady=1;
+else
+_isReady = 0;
+_name=name;
+} */
+void AddChild(Base* child); /*
+{
+_children.push_back(child);
+} */
+void Tabulation(int tab);
+void PrintChildren(Base* rootName, bool condition = false, int tab=0); /*
+{
+if (condition == false) {
+if (rootName->_isReady == true)
+cout << "Test result"<<endl<<"The object " << rootName->_name<<" is ready";
+else
+cout << "Test result"<<endl<<"The object " << rootName->_name<<" is not ready";
+if (!(_children.size()==0))
+cout<<endl;
+rootName->PrintChildren(rootName, true);
+return;
+}
+if (_children.empty()) return;
+for (int i = 0; i<_children.size(); i++)
+{
+if (_name != rootName->_name || i>0)
+cout<<endl;
+if (_children[i]->_isReady)
+cout << "The object " << _children[i]->_name<<" is ready";
+else
+cout << "The object " << _children[i]->_name<<" is not ready";
+_children[i]->PrintChildren(rootName, true);
+}
+}; */
+Base* FindName(const string& way);
+string FindAll(const string& way);
+string FindWay(const string& name);/*
+{
+if (_name == name) return this;
+for (auto i : _children)
+{
+if (i->FindName(name) != nullptr)
+return i->FindName(name);
+}
+return nullptr;
+} */
+void GetReady(); /*
+{
+this->_isReady = true;
+if (_children.empty())
+return;
+for (auto& i: _children[0]->_children)
+i->GetReady();
+} */
+};
+class FourthDerivative: public Base
+{
+public:
+FourthDerivative(Base* parent, string name, int isReady=true, string way = "/");//: Base(name, isReady) 
+/*
+{
+if (parent != nullptr)
+parent->AddChild(this);
+} */
+};
+class SecondDerivative: public FourthDerivative
+{
+public:
+SecondDerivative(Base* parent, string name, int isReady = false, string way = "/");//:
+//FirstDerivative(parent, name, isReady)
+//{
+//}
+};
+class ThirdDerivative: public FourthDerivative
+{
+public:
+ThirdDerivative(Base* parent, string name, int isReady = true, string way = "/");//:
+//FirstDerivative(parent, name, isReady)
+//{
+//}
+};
+class FifthDerivative: public FourthDerivative
+{
+public:
+FifthDerivative(Base* parent, string name, int isReady = false, string way = "/");//:
+//FirstDerivative(parent, name, isReady)
+//{
+//}
+};
+class SixthDerivative: public FourthDerivative
+{
+public:
+SixthDerivative(Base* parent, string name, int isReady = false, string way = "/");//:
+//FirstDerivative(parent, name, isReady)
+//{
+//}
+};
+#endif

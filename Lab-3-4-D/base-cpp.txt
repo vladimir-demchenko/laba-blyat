@@ -1,0 +1,146 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include "base.h"
+	
+	#include <stdlib.h>
+	#include <stdio.h>
+	#include <cstddef> 
+	
+	using namespace std;
+Base::Base(string name, int isReady, string way): _name(name) //= true): _name(name)
+{
+	if(isReady>0)
+		_isReady=1;
+	else
+		_isReady = 0;
+	_name=name;
+	_way = way + "/" +name;
+	//cout << _way<<" #### " << way << endl;
+}
+void Base::AddChild(Base* child)
+{
+	_children.push_back(child);
+}
+void Base::Tabulation(int tab)
+{
+	for (int i=0; i<tab+1; i++)
+		cout<<"    ";
+}
+void Base::PrintChildren(Base* rootName, bool condition, int tab)//= false)
+{
+	if (condition == false) {
+		//if (rootName->_isReady == true)
+		//cout << "Object tree"<<endl<< rootName->_name;
+		//else
+		cout << "Object tree"<<endl<< rootName->_name; //
+		if (!(_children.size()==0))
+			cout<<endl;
+		rootName->PrintChildren(rootName, true, tab++);
+		return;
+	}
+	if (_children.empty()) return;
+	for (int i = 0; i<_children.size(); i++)
+	{
+		if (_name != rootName->_name || i>0)
+			cout<<endl;
+		Tabulation(tab);//cout<<endl;
+		cout <<_children[i]->_name; /*
+		if (_children[i]->_isReady)
+		cout <<_children[i]->_name;
+		else
+		cout << _children[i]->_name; */
+		_children[i]->PrintChildren(rootName, true, tab+1);
+	}
+}//;
+/*
+Base* Base::FindName(const string& way)
+{
+	//cout <<way <<"HERE!"<<endl;
+	if (_way == way) return this;
+	for (auto i : _children)
+	{
+		if (i->FindName(way) != nullptr)
+			return i->FindName(way);
+	}
+	return nullptr;
+}
+*/
+//1
+string Base::FindAll(const string& name)
+{
+	//string return_find;
+	//cout << endl <<"Hm..";
+	//return_find = "//" + name + " Object name: "+ name;
+	if (_name == name) {
+		//cout << endl <<"WOW";
+		//cout << endl <<name;
+		return name;
+	}
+	for (auto i : _children)
+	{
+		if (i->FindAll(name) != "0")
+			return i->FindAll(name);
+	}
+	return "0";
+}
+//22
+string Base::FindWay(const string& way)
+{
+	string return_find;
+	size_t symb = way.find_last_of("/");
+	const string& wayname = way.substr(symb+1);
+	return_find = way + " Object name: " + wayname;
+	if (_way == way) return return_find;
+	for (auto i : _children)
+	{
+		if (i->FindWay(way) != " Object not found")
+			return i->FindWay(way);
+	}
+	return " Object not found";
+}
+//3
+void Base::GetReady()
+{
+	this->_isReady = true;
+	if (_children.empty())
+		return;
+	for (auto& i: _children[0]->_children)
+		i->GetReady();
+}
+
+Base* Base::FindName(const string& name)
+{
+if (_name == name) return this;
+for (auto i : _children)
+{
+if (i->FindName(name) != nullptr)
+return i->FindName(name);
+}
+return nullptr;
+}
+
+FourthDerivative::FourthDerivative(Base* parent, string name, int isReady, string way): Base(name, isReady, way) //, int isReady=true
+{
+	if (parent != nullptr)
+		parent->AddChild(this);
+}
+
+SecondDerivative::SecondDerivative(Base* parent, string name, int isReady, string way): //, int isReady = false
+FourthDerivative(parent, name, isReady, way)
+{
+}
+
+ThirdDerivative::ThirdDerivative(Base* parent, string name, int isReady, string way): //, int isReady = true
+FourthDerivative(parent, name, isReady, way)
+{
+}
+
+FifthDerivative::FifthDerivative(Base* parent, string name, int isReady, string way): //, int isReady = false
+FourthDerivative(parent, name, isReady, way)
+{
+}
+SixthDerivative::SixthDerivative(Base* parent, string name, int isReady, string way): //, int isReady = false
+FourthDerivative(parent, name, isReady, way)
+{
+}

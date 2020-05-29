@@ -1,0 +1,199 @@
+#include <iostream>
+#include "base.h"
+	#include <vector>
+	
+	
+	
+	#include <string>
+	
+	
+	#include <stdlib.h>
+	#include <stdio.h>
+	#include <cstddef> 
+	
+	
+	using namespace std;
+//class FirstDerivative;
+/*class Base
+{
+private:
+string _name;
+protected:
+vector <Base*> _children;
+public:
+bool _isReady = false;
+Base(string name, int isReady = true): _name(name)
+{
+if(isReady>0)
+_isReady=1;
+else
+_isReady = 0;
+_name=name;
+}
+void AddChild(Base* child)
+{
+_children.push_back(child);
+}
+void PrintChildren(Base* rootName, bool condition = false)
+{
+if (condition == false) {
+if (rootName->_isReady == true)
+cout << "Test result"<<endl<<"The object " << rootName->_name<<" is ready";
+else
+cout << "Test result"<<endl<<"The object " << rootName->_name<<" is not ready";
+if (!(_children.size()==0))
+cout<<endl;
+rootName->PrintChildren(rootName, true);
+return;
+}
+if (_children.empty()) return;
+for (int i = 0; i<_children.size(); i++)
+{
+if (_name != rootName->_name || i>0)
+cout<<endl;
+if (_children[i]->_isReady)
+cout << "The object " << _children[i]->_name<<" is ready";
+else
+cout << "The object " << _children[i]->_name<<" is not ready";
+_children[i]->PrintChildren(rootName, true);
+}
+};
+Base* FindName(const string& name)
+{
+if (_name == name) return this;
+for (auto i : _children)
+{
+if (i->FindName(name) != nullptr)
+return i->FindName(name);
+}
+return nullptr;
+}
+void GetReady()
+{
+this->_isReady = true;
+if (_children.empty())
+return;
+for (auto& i: _children[0]->_children)
+i->GetReady();
+}
+};
+class FirstDerivative: public Base
+{
+public:
+FirstDerivative(Base* parent, string name, int isReady=true): Base(name, isReady)
+{
+if (parent != nullptr)
+parent->AddChild(this);
+}
+};
+class SecondDerivative: public FirstDerivative
+{
+public:
+SecondDerivative(Base* parent, string name, int isReady = false):
+FirstDerivative(parent, name, isReady)
+{
+}
+};
+class ThirdDerivative: public FirstDerivative
+{
+public:
+ThirdDerivative(Base* parent, string name, int isReady = true):
+FirstDerivative(parent, name, isReady)
+{
+}
+}; */
+int main()
+{
+	string s;
+	string sroot;
+	string child;
+	string findway, return_ans;
+	cin>>sroot; //sroot = "root"; //
+	Base* app_root = new Base(sroot);
+	string sname;
+	int number1, number2;
+	cin>>sname;
+	string cond;
+	cond = "endtree";
+	while (sname.compare(cond) != cond.compare(cond)){
+		cin>>child;
+		cin>>number1;
+		cin>>number2;
+		//cout << sname << " ###MAIN###"<<endl;
+		if (number1 == 4)
+			new FourthDerivative(app_root->FindName(sname), child, number2, sname);
+		else if (number1 == 2)
+			new SecondDerivative(app_root->FindName(sname), child, number2, sname);
+		else
+			new SixthDerivative(app_root->FindName(sname), child, number2, sname);
+		cin >> sname;
+		if (sname.compare(cond) == cond.compare(cond))
+			break;
+	}
+	//cin >> findway;
+	//
+	//new ThirdDerivative(app_root->FindName("root"),"ob_1_31", 1);
+	//new SecondDerivative(app_root->FindName("root"),"ob_1_31", 1);
+	//new ThirdDerivative(app_root->FindName("root"),"ob_2_41", 1);
+	//new ThirdDerivative(app_root->FindName("root"),"ob_3_43", 1);
+	//new ThirdDerivative(app_root->FindName("root"),"ob_2_42", 1);
+	//new SecondDerivative(app_root->FindName("root"),"ob_1_44", -1);
+	//new SecondDerivative(app_root->FindName("root"),"ob_2_32", 1);
+	//
+	string child_s[99];
+	string child_to[99];
+	string obj_to;
+	int max_child = 0;
+	string message;
+	int way = 1;
+	int j = 0;
+	app_root->PrintChildren(app_root);
+	cout << endl << "Set connects";
+	cin >> way;
+	while (!(way == 0)){
+		cin >> child_s[j];
+		cin >> child_to[j];
+		cout<<endl<<way<<" " <<child_s[j]<<" "<<child_to[j];
+		cin >> way;
+		j++;
+		max_child = j;
+	}
+	cout << endl << "Emit signals";
+	cin >> obj_to;
+	while ((obj_to != "endsignals")){
+		//cout<<endl<<"Here";
+		cin >> message;
+		
+		//cout<<endl<<way<<" " <<child_s[j]<<" "<<child_to[j];
+		j = 0;
+		while(j <= max_child) {
+			if( (app_root->FindAll(obj_to)!="0")&&(app_root->FindAll(child_to[j])!="0")&&(obj_to == child_s[j]))
+				cout << endl << "Signal to " << child_to[j] << " Text: " << child_s[j] << " -> " << message;
+			j++;
+		}
+		cin >> obj_to;
+
+	}
+	
+	//cout << search_address.substr(0,2) << endl;
+	/*
+	if (findway != "//")
+		cout << endl;
+	while (findway != "//") {
+		if (findway.substr(0, 2) == "//") {
+			//cout << "WOW"<<endl;
+			return_ans = app_root->FindAll(findway.substr(2));
+		}
+		if (!(findway.substr(0, 2) == "//")) {
+			return_ans = app_root->FindWay(findway);
+		}
+		
+		if (return_ans == " Object not found")
+			cout << findway;// << " Object not found";
+		cout << return_ans;
+		cin >> findway;
+		if (findway != "//")
+			cout << endl;
+	}
+	*/
+}
